@@ -59,7 +59,7 @@
             this.groupBox1.Size = new System.Drawing.Size(289, 51);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "お気に入りインポート修正";
+            this.groupBox1.Text = "琵琶っぽいお気に入りインポート用修正";
             // 
             // checkBox1
             // 
@@ -83,7 +83,7 @@
             this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(284, 42);
             this.textBox2.TabIndex = 4;
-            this.textBox2.Text = "以下はお気に入りのインポートを行う方のみチェックしてください。";
+            this.textBox2.Text = "以下は琵琶っぽいでお気に入りのインポートを行う方のみチェックしてください。";
             // 
             // Form1
             // 
@@ -99,7 +99,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
-            this.Text = "LVTool  Ver 0.1";
+            this.Text = "LVTool  Ver 0.11";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
