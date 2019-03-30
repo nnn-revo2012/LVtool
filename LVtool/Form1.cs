@@ -13,6 +13,9 @@ namespace LVtool
 {
     public partial class Form1 : Form
     {
+
+        int ConvertMode = 1; // 1:お気に入り変換 2:設定ファイル修正
+
         public Form1()
         {
             InitializeComponent();
@@ -25,7 +28,10 @@ namespace LVtool
 
             for (int i = 0; i < files.Length; i++)
             {
-                work(files[i]);
+                if (ConvertMode == 2)
+                    work(files[i]); //設定ファイル修正
+                else
+                    work2(files[i]); //お気に入り変換
             }
         }
 
@@ -41,36 +47,28 @@ namespace LVtool
             }
         }
 
+        //設定ファイル修正
         private void work(string filename)
         {
-            var kcode = -1;
             var result = false;
+
+            //修正先のファイル名を作成する
+            var newfile = Path.Combine(Path.GetDirectoryName(filename), Path.GetRandomFileName());
 
             try
             {
-
-                //変換先のファイル名を作成する
-                var newfile = Path.Combine(Path.GetDirectoryName(filename), Path.GetRandomFileName());
-
-                //ファイルをコピー
-                kcode = FileCheck(filename);
-                if (kcode == -1)
+                if (FileCheck(filename) == 1)
                 {
-                    MessageBox.Show("変換を中止しました。",
-                       "中止",
-                       MessageBoxButtons.OK,
-                       MessageBoxIcon.Error);
-                    return;
-                }
-
-                //ファイルをコピー
-                if (kcode == 2)
-                {
-                    result = FileCopySJIS(filename, newfile, checkBox1.Checked);
+                    //ファイルをコピー
+                    result = FileCopy(filename, newfile, checkBox1.Checked);
                 }
                 else
                 {
-                    result = FileCopy(filename, newfile, checkBox1.Checked);
+                    MessageBox.Show("設定ファイルのみ変換します。\r\n変換を中止しました。",
+                       "中止",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Error);
+                    result = false;
                 }
 
                 if (result == true)
@@ -89,8 +87,8 @@ namespace LVtool
                         File.Move(newfile, filename);
 
                     }
-                    var msg = (kcode == 2) ? "シフトJIS" : "UTF-8";
-                    msg += "で変換しました。\r\n\r\n"
+
+                    var msg = "設定ファイルを変換しました。\r\n\r\n"
                         + "変換したファイルが文字化けしていたら、\r\n"
                         + renamefile + " を元のファイルにリネームしてください。";      
                     MessageBox.Show(msg,
@@ -114,11 +112,84 @@ namespace LVtool
             }
         }
 
+        //お気に入り変換
+        private void work2(string filename)
+        {
+            var result = false;
+            DialogResult result2;
+
+            var newfile = Path.Combine(Path.GetDirectoryName(filename), Path.GetRandomFileName());
+
+            try
+            {
+                var ret = FileCheck(filename);
+                if (ret == 1)
+                {
+                    checkBox1.Checked = false;
+                    work(filename);
+                    return;
+                }
+                if (ret != -1)
+                {
+                    //確認する
+                    result2 = MessageBox.Show("お気に入りのインポート／エクスポートファイルですか？",
+                        "確認",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Exclamation,
+                        MessageBoxDefaultButton.Button1);
+                    if (result2 == DialogResult.Yes)
+                    {
+                        result = FileCopySJIS(filename, newfile, false);
+                    }
+                    else if (result2 == DialogResult.No)
+                    {
+                        //中止
+                        result = false;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("変換を中止しました。",
+                           "中止",
+                           MessageBoxButtons.OK,
+                           MessageBoxIcon.Error);
+                    result = false;
+                }
+
+                if (result == true)
+                {
+                    //新しいファイルに日付を加える
+                    var renamefile = newfile + "_";
+                    if (!File.Exists(renamefile))
+                    {
+                        File.Move(newfile, renamefile);
+
+                    }
+                    var msg = "お気に入りファイルを変換しました。";
+                    MessageBox.Show(msg,
+                        "変換終了",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                }
+                else
+                {
+                    MessageBox.Show("変換を中止しました。",
+                       "中止",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Error);
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                MessageBox.Show(Ex.Message);
+            }
+        }
         private int FileCheck(string SFile)
         {
             var enc = new System.Text.UTF8Encoding(false);
             var result = -1;
-            DialogResult result2;
 
             try
             {
@@ -137,35 +208,10 @@ namespace LVtool
                     }
                     else
                     {
-                        //確認する
-                        result2 = MessageBox.Show("お気に入りのインポート／エクスポートファイルですか？",
-                        "確認",
-                        MessageBoxButtons.YesNoCancel,
-                        MessageBoxIcon.Exclamation,
-                        MessageBoxDefaultButton.Button1);
-                        if (result2 == DialogResult.Yes)
-                        {
-                            //ShiftJIS
-                            result2 = MessageBox.Show("シフトJISで読み込みます。",
-                                "情報",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-                            result = 2;
-                        }
-                        else if (result2 == DialogResult.No)
-                        { // utf-8
-                            result2 = MessageBox.Show("UTF-8で読み込みます。",
-                                "情報",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-                            result = 1;
-                        }
-                        else if (result2 == DialogResult.Cancel)
-                        {
-                            //中止
-                            result = -1;
-                        }
+                        result = 2;
                     }
+                    /*
+                  */
                 }
 
             }
@@ -260,8 +306,18 @@ namespace LVtool
 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void お気に入りインポート修正ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            ConvertMode = 2; // 1:お気に入り変換 2:設定ファイル修正
+            this.textBox2.Visible = true;
+            this.groupBox1.Visible = true;
+            this.checkBox1.Visible = true;
+
+        }
+
+        private void 終了ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
 
         }
     }
