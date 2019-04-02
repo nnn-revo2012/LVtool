@@ -14,37 +14,40 @@ namespace LVtool
     public partial class Form1 : Form
     {
 
-        int ConvertMode = 1; // 1:お気に入り変換 2:設定ファイル修正
+        private int ConvertMode = 1; // 1:お気に入り変換 2:設定ファイル修正
+
+        private readonly string[][] ReplaceWords =
+            {
+            new[] { "//("+ "AngelLive" +")", "//("+"angel-live"+")" },
+            new[] { "//("+ "ChatPia" +")", "//("+"chatpia"+")" },
+            new[] { "//("+ "DXlive" +")", "//("+ "dxlive" +")" },
+            new[] { "//("+ "caribbeancomgirl" +")", "//("+ "caribbeancomgirl(DX)" +")" },
+            new[] { "//("+ "KanjukuLive" + ")", "//("+ "kanjukulive" +")" },
+            new[] { "//("+ "DMM(w)" +")", "//("+ "dmm(w)" +")" },
+            new[] { "//("+ "DMM(m)" +")", "//("+ "dmm(m)" +")" },
+            new[] { "//("+ "DMM(o)" +")", "//("+ "dmm(o)" +")" },
+            new[] { "//("+ "DMM(a)" +")", "//("+ "dmm" +")" },
+            new[] { "//("+ "DMMw" +")", "//("+ "dmm(w)" +")" },
+            new[] { "//("+ "DMMm" +")", "//("+ "dmm(m)" +")" },
+            new[] { "//("+ "DMMo" +")", "//("+ "dmm(o)" +")" },
+            new[] { "//("+ "DMMa" +")", "//("+ "dmm" +")" },
+            new[] { "//("+ "Jewel" +")", "//("+ "j-live" +")" },
+            new[] { "//("+ "Madamu" +")", "//("+ "madamu" +")" }
+            //new[] { "//("+ "" +")", "//("+ "" +")" }
+            };
+
+        private readonly string[][] ReplaceWords2 =
+            {
+            new[] { "//("+ "DMM(w)" +")", "//("+ "DMMw" +")" },
+            new[] { "//("+ "DMM(m)" +")", "//("+ "DMMm" +")" },
+            new[] { "//("+ "DMM(o)" +")", "//("+ "DMMo" +")" },
+            new[] { "//("+ "DMM(a)" +")", "//("+ "DMMa" +")" }
+            };
 
         public Form1()
         {
             InitializeComponent();
 
-        }
-
-        private void Form1_DragDrop(object sender, DragEventArgs e)
-        {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-
-            for (int i = 0; i < files.Length; i++)
-            {
-                if (ConvertMode == 2)
-                    work(files[i]); //設定ファイル修正
-                else
-                    work2(files[i]); //お気に入り変換
-            }
-        }
-
-        private void Form1_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effect = DragDropEffects.All;
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
         }
 
         //設定ファイル修正
@@ -90,7 +93,7 @@ namespace LVtool
 
                     var msg = "設定ファイルを変換しました。\r\n\r\n"
                         + "変換したファイルが文字化けしていたら、\r\n"
-                        + renamefile + " を元のファイルにリネームしてください。";      
+                        + renamefile + " を元のファイルにリネームしてください。";
                     MessageBox.Show(msg,
                         "変換終了",
                         MessageBoxButtons.OK,
@@ -116,7 +119,7 @@ namespace LVtool
         private void work2(string filename)
         {
             var result = false;
-            DialogResult result2;
+            var mode = -1;
 
             var newfile = Path.Combine(Path.GetDirectoryName(filename), Path.GetRandomFileName());
 
@@ -125,26 +128,26 @@ namespace LVtool
                 var ret = FileCheck(filename);
                 if (ret == 1)
                 {
+                    //設定ファイル修正へ
                     checkBox1.Checked = false;
                     work(filename);
                     return;
                 }
                 if (ret != -1)
                 {
-                    //確認する
-                    result2 = MessageBox.Show("お気に入りのインポート／エクスポートファイルですか？",
-                        "確認",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Exclamation,
-                        MessageBoxDefaultButton.Button1);
-                    if (result2 == DialogResult.Yes)
+                    //変換するファイルの種類を確認する
+                    using (var fo2 = new Form2())
                     {
-                        result = FileCopySJIS(filename, newfile, false);
-                    }
-                    else if (result2 == DialogResult.No)
-                    {
-                        //中止
-                        result = false;
+                        fo2.ShowDialog();
+                        if (fo2.DialogResult == DialogResult.OK)
+                        {
+                            mode = fo2.select_mode;
+                            result = FileCopySJIS(filename, newfile, mode);
+                        }
+                        else if (fo2.DialogResult == DialogResult.Cancel)
+                        {
+                            result = false;
+                        }
                     }
                 }
                 else
@@ -186,124 +189,30 @@ namespace LVtool
                 MessageBox.Show(Ex.Message);
             }
         }
-        private int FileCheck(string SFile)
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
         {
-            var enc = new System.Text.UTF8Encoding(false);
-            var result = -1;
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 
-            try
+            for (int i = 0; i < files.Length; i++)
             {
-                if (!File.Exists(SFile))
-                {
-                    return result;
-                }
-                using (var sr = new StreamReader(SFile, enc))
-                {
-                    string line = sr.ReadLine();
-                    result = line.IndexOf("utf-8");
-                    if (result > -1)
-                    {
-                        //UTF-8 として処理する
-                        result = 1;
-                    }
-                    else
-                    {
-                        result = 2;
-                    }
-                    /*
-                  */
-                }
-
+                if (ConvertMode == 2)
+                    work(files[i]); //設定ファイル修正
+                else
+                    work2(files[i]); //お気に入り変換
             }
-            catch (Exception Ex)
-            {
-                MessageBox.Show(Ex.Message);
-                return -1;
-            }
-            return result;
-
         }
 
-        //文字列を変換する
-        private string ReplaceWords(string str, bool flag)
+        private void Form1_DragEnter(object sender, DragEventArgs e)
         {
-            var line = str.Replace("&#x0;", "");
-
-            if (flag == true)
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                line = line.Replace("DMM(a)", "DMMa");
-                line = line.Replace("DMM(o)", "DMMo");
-                line = line.Replace("DMM(m)", "DMMm");
-                line = line.Replace("DMM(w)", "DMMw");
+                e.Effect = DragDropEffects.All;
             }
-
-            return line;
-        }
-
-        //UTF-8 BOM無で読み書きする
-        private bool FileCopy(string SFile, string DFile, bool flag)
-        {
-
-            var enc = new System.Text.UTF8Encoding(false);
-
-            try
+            else
             {
-                if (!File.Exists(SFile))
-                {
-                    return false;
-                }
-                using (var sr = new StreamReader(SFile, enc))
-                using (var sw = new StreamWriter(DFile, true, enc))
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null) // 1行ずつ読み出し。
-                    {
-                        line = ReplaceWords(line, flag);
-                        sw.WriteLine(line);
-                    }
-                }
-
+                e.Effect = DragDropEffects.None;
             }
-            catch (Exception Ex)
-            {
-                MessageBox.Show(Ex.Message);
-                return false;
-            }
-            return true;
-
-        }
-
-        //Shift-JISで読み書きする
-        private bool FileCopySJIS(string SFile, string DFile, bool flag)
-        {
-
-            var enc = System.Text.Encoding.GetEncoding("shift_jis");
-
-            try
-            {
-                if (!File.Exists(SFile))
-                {
-                    return false;
-                }
-                using (var sr = new StreamReader(SFile, enc))
-                using (var sw = new StreamWriter(DFile, true, enc))
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null) // 1行ずつ読み出し。
-                    {
-                        line = ReplaceWords(line, flag);
-                        sw.WriteLine(line);
-                    }
-                }
-
-            }
-            catch (Exception Ex)
-            {
-                MessageBox.Show(Ex.Message);
-                return false;
-            }
-            return true;
-
         }
 
         private void お気に入りインポート修正ToolStripMenuItem1_Click(object sender, EventArgs e)

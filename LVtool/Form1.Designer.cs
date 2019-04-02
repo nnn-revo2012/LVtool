@@ -53,7 +53,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(291, 100);
             this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "ファイルからエラーになる文字列を除去したり特定の文字列を変換します。\r\n\r\nフォームに変換したいファイルをドラッグ＆ドロップしてください。\r\n";
+            this.textBox1.Text = "ファイルからエラーになる文字列を除去したり、お気に入りファイルを変換します。\r\n\r\nフォームに変換したいファイルをドラッグ＆ドロップしてください。\r\n";
             // 
             // groupBox1
             // 
@@ -91,7 +91,7 @@
             this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(291, 42);
             this.textBox2.TabIndex = 4;
-            this.textBox2.Text = "以下は琵琶っぽいでお気に入りのインポートを行う方のみチェックしてください。";
+            this.textBox2.Text = "琵琶っぽいのお気に入りインポートのための設定ファイル修正を行います。";
             this.textBox2.Visible = false;
             // 
             // menuStrip1
