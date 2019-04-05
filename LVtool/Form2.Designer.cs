@@ -57,10 +57,10 @@
             this.radioButton3.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.radioButton3.Location = new System.Drawing.Point(15, 76);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(178, 19);
+            this.radioButton3.Size = new System.Drawing.Size(168, 19);
             this.radioButton3.TabIndex = 2;
             this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "琵琶っぽい → 琵琶っぽい";
+            this.radioButton3.Text = "びわっぽい → びわっぽい";
             this.radioButton3.UseVisualStyleBackColor = true;
             // 
             // radioButton2
@@ -69,9 +69,9 @@
             this.radioButton2.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.radioButton2.Location = new System.Drawing.Point(15, 51);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(172, 19);
+            this.radioButton2.Size = new System.Drawing.Size(167, 19);
             this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "しんびわ　→　琵琶っぽい";
+            this.radioButton2.Text = "しんびわ　→　びわっぽい";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // radioButton1
@@ -80,9 +80,9 @@
             this.radioButton1.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.radioButton1.Location = new System.Drawing.Point(15, 26);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(172, 19);
+            this.radioButton1.Size = new System.Drawing.Size(167, 19);
             this.radioButton1.TabIndex = 0;
-            this.radioButton1.Text = "琵琶っぽい　→　しんびわ";
+            this.radioButton1.Text = "びわっぽい　→　しんびわ";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // button1
@@ -107,7 +107,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(77, 23);
             this.button2.TabIndex = 2;
-            this.button2.Text = "CANCEL";
+            this.button2.Text = "キャンセル";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // Form2

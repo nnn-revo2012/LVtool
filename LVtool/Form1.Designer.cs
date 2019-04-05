@@ -51,48 +51,50 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(291, 100);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "ファイルからエラーになる文字列を除去したり、お気に入りファイルを変換します。\r\n\r\nフォームに変換したいファイルをドラッグ＆ドロップしてください。\r\n";
+            this.textBox1.Size = new System.Drawing.Size(291, 102);
+            this.textBox1.TabIndex = 1;
+            this.textBox1.Text = "・びわっぽいの設定ファイルから起動時エラーになる文字列を削除します。\r\n\r\n・お気に入りファイルをインポート／エクスポートできるよう変換します。\r\n\r\n";
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.checkBox1);
-            this.groupBox1.Location = new System.Drawing.Point(14, 242);
+            this.groupBox1.Location = new System.Drawing.Point(12, 218);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(291, 51);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "琵琶っぽいお気に入りインポート用修正";
+            this.groupBox1.Text = "DMMお気に入りインポート用修正";
             this.groupBox1.Visible = false;
             // 
             // checkBox1
             // 
             this.checkBox1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox1.Location = new System.Drawing.Point(18, 19);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(164, 17);
+            this.checkBox1.Size = new System.Drawing.Size(223, 17);
             this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "DMM(a) -> DMMa に変更";
+            this.checkBox1.Text = "DMM(a) -> DMMa のように変更します";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.Visible = false;
             // 
             // textBox2
             // 
             this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox2.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.textBox2.Enabled = false;
-            this.textBox2.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.textBox2.Location = new System.Drawing.Point(14, 194);
+            this.textBox2.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.textBox2.Location = new System.Drawing.Point(14, 155);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(291, 42);
             this.textBox2.TabIndex = 4;
-            this.textBox2.Text = "琵琶っぽいのお気に入りインポートのための設定ファイル修正を行います。";
-            this.textBox2.Visible = false;
+            this.textBox2.Text = "フォームに変換するファイルをドラッグ＆ドロップしてください。";
             // 
             // menuStrip1
             // 
@@ -117,8 +119,8 @@
             // お気に入りインポート修正ToolStripMenuItem1
             // 
             this.お気に入りインポート修正ToolStripMenuItem1.Name = "お気に入りインポート修正ToolStripMenuItem1";
-            this.お気に入りインポート修正ToolStripMenuItem1.Size = new System.Drawing.Size(220, 22);
-            this.お気に入りインポート修正ToolStripMenuItem1.Text = "お気に入りインポート修正";
+            this.お気に入りインポート修正ToolStripMenuItem1.Size = new System.Drawing.Size(261, 22);
+            this.お気に入りインポート修正ToolStripMenuItem1.Text = "DMMお気に入りインポート用修正";
             this.お気に入りインポート修正ToolStripMenuItem1.Click += new System.EventHandler(this.お気に入りインポート修正ToolStripMenuItem1_Click);
             // 
             // toolStripSeparator1
@@ -149,7 +151,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
-            this.Text = "LVTool  Ver 0.22";
+            this.Text = "LVTool  Ver 0.23";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             this.groupBox1.ResumeLayout(false);

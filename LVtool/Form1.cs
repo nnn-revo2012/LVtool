@@ -292,6 +292,8 @@ namespace LVtool
         {
             ConvertMode = 2; //2:設定ファイル(DMMサイトID)修正
 
+            this.textBox1.Text = "お気に入りインポート時にDMMのデーターが正しく読み込めないので、正しく読み込めるようにびわっぽいの設定ファイルを修正します。";
+            this.textBox1.Text += "\r\n\r\n※設定ファイルを書き換えるので、元の設定ファイルは念のため保存しておいてください。";
             this.textBox2.Visible = true;
             this.groupBox1.Visible = true;
             this.checkBox1.Visible = true;
