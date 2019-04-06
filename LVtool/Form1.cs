@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
+using LVtool.Utils;
+
 namespace LVtool
 {
     public partial class Form1 : Form
@@ -33,7 +35,7 @@ namespace LVtool
             new[] {"DMMo", "dmm(o)"},
             new[] {"DMMa", "dmm"},
             new[] {"Jewel", "j-live"},
-            new[] {  "Madamu", "madamu"}
+            new[] {"Madamu", "madamu"}
             //new[] {"", ""}
             };
 
@@ -102,6 +104,7 @@ namespace LVtool
 
             //修正先のファイル名を作成する
             var newfile = Path.Combine(Path.GetDirectoryName(filename), Path.GetRandomFileName());
+            var renamefile = filename + ".bak";
 
             try
             {
@@ -110,7 +113,6 @@ namespace LVtool
                 if (result == true)
                 {
                     //元ファイルをリネーム
-                    var renamefile = filename + ".bak";
                     if (!File.Exists(renamefile))
                     {
                         File.Move(filename, renamefile);
@@ -155,6 +157,7 @@ namespace LVtool
             var mode = -1;
 
             var newfile = Path.Combine(Path.GetDirectoryName(filename), Path.GetRandomFileName());
+            var renamefile = Util.GetLogfile(Path.GetDirectoryName(filename), Path.GetFileName(filename));
 
             try
             {
@@ -174,14 +177,13 @@ namespace LVtool
                 }
                 if (result == true)
                 {
-                    //新しいファイルに日付を加える
-                    var renamefile = newfile + "_";
                     if (!File.Exists(renamefile))
                     {
                         File.Move(newfile, renamefile);
 
                     }
-                    var msg = "お気に入りファイルを変換しました。";
+                    var msg = "お気に入りファイルを変換しました。\r\n\r\n"
+                        + "変換したファイル:\r\n" + renamefile;
                     MessageBox.Show(msg,
                         "変換終了",
                         MessageBoxButtons.OK,
@@ -210,15 +212,15 @@ namespace LVtool
 
             //修正先のファイル名を作成する
             var newfile = Path.Combine(Path.GetDirectoryName(filename), Path.GetRandomFileName());
-
+            var renamefile = filename + ".org";
+            var logfile = Util.GetLogfile(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename)+".log");
+        
             try
             {
-                result = FileConvert(filename, newfile, checkBox1.Checked);
-                result = false;
+                result = FileConvert(filename, newfile, logfile);
                 if (result == true)
                 {
                     //元ファイルをリネーム
-                    var renamefile = filename + ".bak";
                     if (!File.Exists(renamefile))
                     {
                         File.Move(filename, renamefile);
@@ -233,7 +235,7 @@ namespace LVtool
                     }
 
                     var msg = "設定ファイルを変換しました。\r\n\r\n"
-                        + "変換したファイルが文字化けしていたら、\r\n"
+                        + "変換した設定ファイルに問題があった場合は\r\n"
                         + renamefile + " を元のファイルにリネームしてください。";
                     MessageBox.Show(msg,
                         "変換終了",

@@ -12,6 +12,8 @@ using System.Xml.XPath;
 using System.Xml.Linq;
 using System.Diagnostics;
 
+using LVtool.Utils;
+
 namespace LVtool
 {
     public partial class Form1 : Form
@@ -88,7 +90,7 @@ namespace LVtool
         }
 
         //UTF-8 BOM無で読み書きする
-        private bool FileConvert(string SFile, string DFile, bool flag)
+        private bool FileConvert(string SFile, string DFile, string logfile)
         {
 
             var enc = new System.Text.UTF8Encoding(false);
@@ -100,32 +102,30 @@ namespace LVtool
                     return false;
                 }
 
+                Util.WriteLog(logfile, "***** 変換開始 *****");
                 var xdoc = XDocument.Load(SFile);
                 var plu = xdoc.XPathSelectElements("Setting/Plugins/PluginInfo");
                 var fav = xdoc.XPathSelectElements("Setting/Favorites/Favorite");
                 var bla = xdoc.XPathSelectElements("Setting/BlackLists/BlackList");
                 var vie = xdoc.XPathSelectElements("Setting/ViewLog/PerformerLog");
 
-                var ttt  = "プラグイン: " + plu.Count() + "\r\n";
-                    ttt += "お気に入り: " + fav.Count() + "\r\n";
-                    ttt += "ブラックリスト: " + bla.Count() + "\r\n";
-                    ttt += "ログ: " + vie.Count() + "\r\n";
-                Debug.WriteLine(ttt);
-
-                foreach (var elm in plu)
+                Util.WriteLog(logfile, "プラグイン: " + plu.Count() + "件");
+                //foreach (var elm in plu)
+                for (int i = plu.Count()-1; i>=0; i--)
                 {
+                    var elm = plu.ToArray()[i];
                     foreach (var rpl in ReplaceWords2.ToList())
                     {
                         if (elm.Element("Site").Value == rpl[0])
                         {
                             if (plu.Where(c => (c.Element("Site").Value == rpl[1])).Count() > 0)
                             {
-                                Debug.WriteLine(rpl[1] + " が存在するので削除");
+                                Util.WriteLog(logfile, rpl[0] + ": " + rpl[1] + "が存在するので削除");
                                 elm.Remove();
                             }
                             else
                             {
-                                Debug.WriteLine(rpl[1] + " はないので変換");
+                                Util.WriteLog(logfile, rpl[0] + ": " + rpl[1] + "に変換");
                                 elm.Element("Site").SetValue(rpl[1]);
                                 elm.Element("Alias").SetValue(rpl[1]);
                             }
@@ -133,8 +133,11 @@ namespace LVtool
                     }
                 }
 
-                foreach (var elm in fav)
+                Util.WriteLog(logfile, "お気に入り: " + fav.Count() + "件");
+                //foreach (var elm in fav)
+                for (int i = fav.Count() - 1; i >= 0; i--)
                 {
+                    var elm = fav.ToArray()[i];
                     foreach (var rpl in ReplaceWords2.ToList())
                     {
                         if (elm.Element("Site").Value == rpl[0])
@@ -142,20 +145,47 @@ namespace LVtool
                             var id = elm.Element("ID").Value;
                             if (fav.Where(c => (c.Element("Site").Value == rpl[1] && c.Element("ID").Value == id)).Count() > 0)
                             {
-                                Debug.WriteLine(rpl[1] + ": " + id + " が存在するので削除");
+                                Util.WriteLog(logfile, rpl[0] + " " + id + ": " + rpl[1] + " " + id + "が存在するので削除");
                                 elm.Remove();
                             }
                             else
                             {
-                                Debug.WriteLine(rpl[1] + ": " + id + " はないので変換");
+                                Util.WriteLog(logfile, rpl[0] + " " + id + ": " + rpl[1] + " " + id + "に変換");
                                 elm.Element("Site").SetValue(rpl[1]);
                             }
                         }
                     }
                 }
 
-                foreach (var elm in vie)
+                Util.WriteLog(logfile, "ブラックリスト: " + bla.Count() + "件");
+                //foreach (var elm in bla)
+                for (int i = bla.Count() - 1; i >= 0; i--)
                 {
+                    var elm = bla.ToArray()[i];
+                    foreach (var rpl in ReplaceWords2.ToList())
+                    {
+                        if (elm.Element("Site").Value == rpl[0])
+                        {
+                            var id = elm.Element("ID").Value;
+                            if (bla.Where(c => (c.Element("Site").Value == rpl[1] && c.Element("ID").Value == id)).Count() > 0)
+                            {
+                                Util.WriteLog(logfile, rpl[0] + " " + id + ": " + rpl[1] + " " + id + "が存在するので削除");
+                                elm.Remove();
+                            }
+                            else
+                            {
+                                Util.WriteLog(logfile, rpl[0] + " " + id + ": " + rpl[1] + " " + id + "に変換");
+                                elm.Element("Site").SetValue(rpl[1]);
+                            }
+                        }
+                    }
+                }
+
+                Util.WriteLog(logfile, "履歴: " + vie.Count() + "件");
+                //foreach (var elm in vie)
+                for (int i = vie.Count() - 1; i >= 0; i--)
+                {
+                    var elm = vie.ToArray()[i];
                     foreach (var rpl in ReplaceWords2.ToList())
                     {
                         if (elm.Element("Site").Value == rpl[0])
@@ -163,12 +193,12 @@ namespace LVtool
                             var id = elm.Element("ID").Value;
                             if (vie.Where(c => (c.Element("Site").Value == rpl[1] && c.Element("ID").Value == id)).Count() > 0)
                             {
-                                Debug.WriteLine(rpl[1] + ": " + id + " が存在するので削除");
+                                Util.WriteLog(logfile, rpl[0] + " " + id + ": " + rpl[1] + " " + id + "が存在するので削除");
                                 elm.Remove();
                             }
                             else
                             {
-                                Debug.WriteLine(rpl[1] + ": " + id + " はないので変換");
+                                Util.WriteLog(logfile, rpl[0] + " " + id + ": " + rpl[1] + " " + id + "に変換");
                                 elm.Element("Site").SetValue(rpl[1]);
                             }
                         }
@@ -176,6 +206,8 @@ namespace LVtool
                 }
 
                 xdoc.Save(DFile);
+                Util.WriteLog(logfile, "***** 変換終了 *****");
+
             }
             catch (Exception Ex)
             {
