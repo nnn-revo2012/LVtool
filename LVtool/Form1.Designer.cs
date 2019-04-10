@@ -72,8 +72,6 @@
             // 
             this.checkBox1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox1.Location = new System.Drawing.Point(18, 19);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(223, 17);
@@ -126,12 +124,12 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(217, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(258, 6);
             // 
             // 終了ToolStripMenuItem
             // 
             this.終了ToolStripMenuItem.Name = "終了ToolStripMenuItem";
-            this.終了ToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.終了ToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
             this.終了ToolStripMenuItem.Text = "終了";
             this.終了ToolStripMenuItem.Click += new System.EventHandler(this.終了ToolStripMenuItem_Click);
             // 
@@ -151,7 +149,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
-            this.Text = "LVTool  Ver 0.23";
+            this.Text = "LVTool  Ver 0.24";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             this.groupBox1.ResumeLayout(false);

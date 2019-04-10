@@ -66,6 +66,26 @@ namespace LVtool
                 {
                     if (kcode == 1)
                     {
+                        if (this.checkBox1.Checked == false)
+                        {
+                            var result = MessageBox.Show("DMMのデーターが正しくインポートできるように\r\n設定ファイルを修正します。よろしいですか。",
+                               "確認",
+                               MessageBoxButtons.YesNo,
+                               MessageBoxIcon.Exclamation,
+                               MessageBoxDefaultButton.Button2);
+                            if (result == DialogResult.Yes)
+                            {
+                                this.checkBox1.Checked = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("修正を中止しました。",
+                                   "中止",
+                                   MessageBoxButtons.OK,
+                                   MessageBoxIcon.Information);
+                                return;
+                            }
+                        }
                         // DMM(a) -> DMMa 変換処理
                         ConvertSetting(filename);
                     }
@@ -74,7 +94,7 @@ namespace LVtool
                         MessageBox.Show("設定ファイルのみ変換します。\r\n変換を中止しました。",
                            "中止",
                            MessageBoxButtons.OK,
-                           MessageBoxIcon.Error);
+                           MessageBoxIcon.Information);
                     }
                 }
                 else if (ConvertMode == 1)
@@ -86,7 +106,7 @@ namespace LVtool
                     }
                     else
                     {
-                        // お気に入り変換
+                        // お気に入りファイル変換
                         ReplaceFavorite(filename);
                     }
                 }
@@ -95,6 +115,7 @@ namespace LVtool
             {
                 MessageBox.Show(Ex.Message);
             }
+
         }
 
         //設定ファイル修正(&#x0;のみ修正)
@@ -140,7 +161,7 @@ namespace LVtool
                     MessageBox.Show("変換を中止しました。",
                        "中止",
                        MessageBoxButtons.OK,
-                       MessageBoxIcon.Error);
+                       MessageBoxIcon.Information);
                 }
 
             }
@@ -195,7 +216,7 @@ namespace LVtool
                     MessageBox.Show("変換を中止しました。",
                        "中止",
                        MessageBoxButtons.OK,
-                       MessageBoxIcon.Error);
+                       MessageBoxIcon.Information);
                 }
 
             }
@@ -234,8 +255,8 @@ namespace LVtool
 
                     }
 
-                    var msg = "設定ファイルを変換しました。\r\n\r\n"
-                        + "変換した設定ファイルに問題があった場合は\r\n"
+                    var msg = "設定ファイルをDMMインポート用に修正しました。\r\n\r\n"
+                        + "修正した設定ファイルに問題があった場合は\r\n"
                         + renamefile + " を元のファイルにリネームしてください。";
                     MessageBox.Show(msg,
                         "変換終了",
@@ -245,10 +266,10 @@ namespace LVtool
                 }
                 else
                 {
-                    MessageBox.Show("変換を中止しました。",
+                    MessageBox.Show("修正を中止しました。",
                        "中止",
                        MessageBoxButtons.OK,
-                       MessageBoxIcon.Error);
+                       MessageBoxIcon.Information);
                 }
 
             }
@@ -274,7 +295,7 @@ namespace LVtool
                 MessageBox.Show("変換を中止しました。",
                    "中止",
                    MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
+                   MessageBoxIcon.Information);
             }
         }
 

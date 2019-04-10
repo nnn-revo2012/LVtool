@@ -42,6 +42,7 @@ namespace LVtool
                     }
                     else
                     {
+                        //その他として処理する
                         result = 2;
                     }
                 }
@@ -49,14 +50,13 @@ namespace LVtool
             }
             catch (Exception Ex)
             {
-                MessageBox.Show(Ex.Message);
                 return -1;
             }
             return result;
 
         }
 
-        //UTF-8 BOM無で読み書きする
+        //設定ファイルの &#x0; を消去 (UTF-8 BOM無)
         private bool FileCopy(string SFile, string DFile)
         {
 
@@ -89,7 +89,7 @@ namespace LVtool
 
         }
 
-        //UTF-8 BOM無で読み書きする
+        //設定ファイルのsiteid DMM(a) -> DMMa に変換する (UTF-8)
         private bool FileConvert(string SFile, string DFile, string logfile)
         {
 
@@ -218,40 +218,47 @@ namespace LVtool
 
         }
 
-        //文字列を変換する
+        //siteid文字列を変換する
         private string ReplaceExport(string str, int mode)
         {
             var line = str;
 
-            if (mode == 1) //びわっぽい→しんびわ
+            try
             {
-                foreach (var item in ReplaceWords)
-                    line = line.Replace("//(" + item[0] + "):", "//(" + item[1] + "):");
-            }
-            else if (mode == 2) //しんびわ→びわっぽい
-            {
-                foreach (var item in ReplaceWords)
-                    line = line.Replace("//(" + item[1] + "):", "//(" + item[0] + "):");
-            }
+                if (mode == 1) //びわっぽい→しんびわ
+                {
+                    foreach (var item in ReplaceWords)
+                        line = line.Replace("//(" + item[0] + "):", "//(" + item[1] + "):");
+                }
+                else if (mode == 2) //しんびわ→びわっぽい
+                {
+                    foreach (var item in ReplaceWords)
+                        line = line.Replace("//(" + item[1] + "):", "//(" + item[0] + "):");
+                }
 
-            if (mode >= 2) //しんびわ→びわっぽい びわっぽい→びわっぽい
+                if (mode >= 2) //しんびわ→びわっぽい びわっぽい→びわっぽい
+                {
+                    foreach (var item in ReplaceWords2)
+                        line = line.Replace("//(" + item[0] + "):", "//(" + item[1] + "):");
+                }
+            }
+            catch (Exception)
             {
-                foreach (var item in ReplaceWords2)
-                    line = line.Replace("//(" + item[0] + "):", "//(" + item[1] + "):");
+                return str;
             }
 
             return line;
         }
 
-        //Shift-JISで読み書きする
+        //お気に入りインポート／エクスポートファイルのsiteidを変換する (Shift-JIS)
         private bool FileCopySJIS(string SFile, string DFile, int mode)
         {
 
             var enc = System.Text.Encoding.GetEncoding("shift_jis");
-            if (mode <= 0 || mode > 3) return false;
 
             try
             {
+                if (mode <= 0 || mode > 3) return false;
                 if (!File.Exists(SFile))
                 {
                     return false;
