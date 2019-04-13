@@ -40,5 +40,25 @@ namespace LVtool.Utils
             System.IO.File.AppendAllText(logfile, mes + "\r\n");
         }
 
+        //保存ファイルにシーケンスNoをつける
+        public static string GetBackupFileName(string filename)
+        {
+            if (!File.Exists(filename)) return filename;
+
+             var ii = 1;
+            //同名ファイル名がないかチェック
+            while (IsExistFile(filename, ii)) ++ii;
+
+            return filename + "(" + ii.ToString() + ")";
+        }
+
+        //同名ファイル名がないかチェック
+        public static bool IsExistFile(string file, int seq)
+        {
+            var fn = file + "(" + seq.ToString() + ")";
+
+            return !File.Exists(fn) ? false : true;
+        }
+
     }
 }

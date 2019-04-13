@@ -134,6 +134,7 @@ namespace LVtool
                 if (result == true)
                 {
                     //元ファイルをリネーム
+                    renamefile = Util.GetBackupFileName(renamefile);
                     if (!File.Exists(renamefile))
                     {
                         File.Move(filename, renamefile);
@@ -241,6 +242,7 @@ namespace LVtool
                 result = FileConvert(filename, newfile, logfile);
                 if (result == true)
                 {
+                    renamefile = Util.GetBackupFileName(renamefile);
                     //元ファイルをリネーム
                     if (!File.Exists(renamefile))
                     {

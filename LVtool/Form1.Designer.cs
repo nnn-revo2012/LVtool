@@ -111,26 +111,26 @@
             this.toolStripSeparator1,
             this.終了ToolStripMenuItem});
             this.お気に入りインポート修正ToolStripMenuItem.Name = "お気に入りインポート修正ToolStripMenuItem";
-            this.お気に入りインポート修正ToolStripMenuItem.Size = new System.Drawing.Size(56, 22);
-            this.お気に入りインポート修正ToolStripMenuItem.Text = "ツール";
+            this.お気に入りインポート修正ToolStripMenuItem.Size = new System.Drawing.Size(85, 22);
+            this.お気に入りインポート修正ToolStripMenuItem.Text = "ファイル(&F)";
             // 
             // お気に入りインポート修正ToolStripMenuItem1
             // 
             this.お気に入りインポート修正ToolStripMenuItem1.Name = "お気に入りインポート修正ToolStripMenuItem1";
-            this.お気に入りインポート修正ToolStripMenuItem1.Size = new System.Drawing.Size(261, 22);
-            this.お気に入りインポート修正ToolStripMenuItem1.Text = "DMMお気に入りインポート用修正";
+            this.お気に入りインポート修正ToolStripMenuItem1.Size = new System.Drawing.Size(280, 22);
+            this.お気に入りインポート修正ToolStripMenuItem1.Text = "DMMお気に入りインポート用修正(&D)";
             this.お気に入りインポート修正ToolStripMenuItem1.Click += new System.EventHandler(this.お気に入りインポート修正ToolStripMenuItem1_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(258, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(277, 6);
             // 
             // 終了ToolStripMenuItem
             // 
             this.終了ToolStripMenuItem.Name = "終了ToolStripMenuItem";
-            this.終了ToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
-            this.終了ToolStripMenuItem.Text = "終了";
+            this.終了ToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+            this.終了ToolStripMenuItem.Text = "終了(&X)";
             this.終了ToolStripMenuItem.Click += new System.EventHandler(this.終了ToolStripMenuItem_Click);
             // 
             // Form1
